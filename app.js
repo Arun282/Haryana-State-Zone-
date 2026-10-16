@@ -1,4 +1,4 @@
-const API_URL="https://haryana-state-zone.floot.app/_api/news/latest";
+const API_URL="/api/news";
 let allStories=[],category="all";
 const $=id=>document.getElementById(id);
 $("today").textContent=new Intl.DateTimeFormat("hi-IN",{dateStyle:"full"}).format(new Date());
