@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#b91c1c"><meta name="description" content="Haryana State Zone — हरियाणा की ताज़ा खबरें">
+<link rel="manifest" href="./manifest.webmanifest">
+<title>Haryana State Zone | हरियाणा की खबरें</title>
+<style>
+:root{--red:#b91c1c;--ink:#171717;--muted:#666;--line:#e5e5e5;--paper:#fff}
+*{box-sizing:border-box}body{margin:0;background:#f4f4f4;color:var(--ink);font-family:Arial,"Noto Sans Devanagari",sans-serif}
+header{background:var(--paper);border-top:5px solid var(--red);border-bottom:1px solid var(--line)}
+.wrap{max-width:1120px;margin:auto;padding:0 16px}.topline{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:9px 0;font-size:12px;color:var(--muted);border-bottom:1px solid var(--line)}
+.brand{padding:20px 0 15px;text-align:center}.brand h1{font-family:Georgia,serif;font-size:clamp(30px,6vw,54px);margin:0;font-weight:900;letter-spacing:-1px}.brand h1 span{color:var(--red)}.brand p{margin:7px 0 0;letter-spacing:2px;font-size:12px;font-weight:bold}
+nav{display:flex;gap:8px;overflow:auto;padding:11px 0;border-top:1px solid var(--line)}nav button{border:0;background:transparent;padding:8px 12px;font-weight:bold;white-space:nowrap;cursor:pointer;border-radius:4px}nav button.active,nav button:hover{background:var(--red);color:#fff}
+main{padding:22px 0}.breaking{background:var(--red);color:white;padding:12px 14px;font-weight:bold;display:flex;gap:12px;align-items:center;margin-bottom:20px}.breaking strong{background:#fff;color:var(--red);padding:4px 7px;font-size:12px}
+.section-title{border-bottom:2px solid var(--ink);font-size:22px;padding-bottom:8px;margin:0 0 16px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.card{background:white;border:1px solid var(--line);overflow:hidden;display:flex;flex-direction:column;min-width:0}.photo{width:100%;aspect-ratio:16/9;background:#eee;display:flex;align-items:center;justify-content:center;color:#777;font-size:13px}.photo img{width:100%;height:100%;object-fit:cover}.card-content{padding:14px;display:flex;flex-direction:column;gap:9px;flex:1}.category{font-size:11px;font-weight:bold;color:var(--red);text-transform:uppercase}.card h2{font-size:19px;line-height:1.45;margin:0}.card p{margin:0;color:#555;font-size:14px;line-height:1.7}.meta{font-size:11px;color:#777;margin-top:auto;padding-top:6px}.read{margin-top:4px;align-self:flex-start;border:1px solid var(--red);color:var(--red);background:white;padding:8px 12px;font-weight:bold;cursor:pointer;border-radius:3px}.read:hover{background:var(--red);color:white}
+.status{background:white;border:1px solid var(--line);padding:20px;text-align:center;color:#555;line-height:1.7}.hidden{display:none!important}
+.article{position:fixed;inset:0;z-index:5;background:white;overflow:auto;padding:20px 0}.article-inner{max-width:800px;margin:auto;padding:0 18px}.close{position:sticky;top:0;background:#171717;color:white;border:0;padding:10px 16px;cursor:pointer}.article h2{font-size:clamp(28px,5vw,42px);line-height:1.4;margin:22px 0 12px}.article .summary{font-size:19px;font-weight:bold;line-height:1.8}.article .body{font-size:17px;line-height:2;white-space:pre-line}.article .article-photo{width:100%;max-height:440px;object-fit:cover;margin:14px 0}.footer{text-align:center;color:#777;font-size:12px;padding:28px 0}
+@media(max-width:760px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.card-content{padding:11px}.card h2{font-size:16px}.card p{font-size:13px}.topline{font-size:11px}}
+@media(max-width:480px){.grid{grid-template-columns:1fr}.brand{padding:16px 0 12px}.card{display:grid;grid-template-columns:110px minmax(0,1fr)}.card .photo{height:100%;min-height:130px;aspect-ratio:auto}.card h2{font-size:16px}.card p{display:none}.card-content{gap:7px}.read{padding:6px 9px;font-size:12px}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<div class="topline"><span id="today">हरियाणा की ताज़ा खबरें</span><span>हिंदी न्यूज़ • Haryana</span></div>
+<div class="brand"><h1>HARYANA <span>STATE</span> ZONE</h1><p>हरियाणा की आवाज़ • हर खबर पर नज़र</p></div>
+<nav id="nav"><button class="active" data-category="all">सभी खबरें</button><button data-category="हरियाणा">हरियाणा</button><button data-category="देश">देश</button><button data-category="शिक्षा">शिक्षा</button><button data-category="खेल">खेल</button><button data-category="मनोरंजन">मनोरंजन</button></nav>
+</div></header>
+<main class="wrap"><div class="breaking"><strong>ताज़ा खबर</strong><span id="ticker">खबरें लोड हो रही हैं…</span></div><h2 class="section-title">लेटेस्ट न्यूज़ <small style="font-size:12px;color:#777;font-weight:normal">• हर मिनट अपडेट</small></h2><div id="status" class="status">खबरें लोड हो रही हैं…</div><section id="news" class="grid"></section><div class="footer">© Haryana State Zone • खबरों की जानकारी उपलब्ध फ़ीड के आधार पर</div></main>
+<section id="article" class="article hidden" aria-modal="true" role="dialog"><div class="article-inner"><button id="close" class="close">← वापस खबरों पर</button><div id="article-content"></div></div></section>
+<script src="./app.js"></script>
+</body></html>
