@@ -5,7 +5,9 @@ const FEEDS = [
   ["रेवाड़ी", "Rewari Haryana news when:2d"],
   ["गुरुग्राम", "Gurugram Haryana news when:1d"],
   ["देश", "India latest news when:1d"],
-  ["खेल", "(India cricket OR football OR hockey OR badminton OR tennis OR sports) when:1d"]
+  ["खेल", "India sports news when:1d"],
+  ["खेल", "India cricket news when:1d"],
+  ["खेल", "India football hockey badminton tennis news when:2d"]
 ];
 const decode = (s="") => s.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g,"$1").replace(/<[^>]*>/g," ").replace(/&amp;/g,"&").replace(/&quot;/g,'"').replace(/&#39;|&apos;/g,"'").replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&#(\d+);/g,(_,n)=>String.fromCodePoint(Number(n))).replace(/&#x([\da-f]+);/gi,(_,n)=>String.fromCodePoint(parseInt(n,16))).replace(/\s+/g," ").trim();
 function tag(xml,name){const re=new RegExp("<"+name+"(?:\\s[^>]*)?>([\\s\\S]*?)<\\/"+name+">","i");return (xml.match(re)||[])[1]||"";}
