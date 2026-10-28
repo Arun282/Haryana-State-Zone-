@@ -1,33 +1,28 @@
 <!doctype html>
-<html lang="hi">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#b91c1c">
-<title>LIVE क्रिकेट | International News</title>
+<html lang="hi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#b91c1c"><title>Live Cricket Score & Upcoming Matches | International News</title>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#f3f4f6;color:#171717;font-family:Arial,"Noto Sans Devanagari",sans-serif}header{background:#b91c1c;color:#fff;padding:14px 16px}header a{color:#fff;text-decoration:none;font-weight:bold}header h1{font-size:22px;margin:12px 0 4px}.wrap{max-width:900px;margin:20px auto;padding:0 14px}.panel{background:#fff;border-radius:12px;padding:18px;margin-bottom:16px;box-shadow:0 2px 12px #0000000d}.badge{display:inline-block;background:#b91c1c;color:#fff;padding:5px 9px;border-radius:5px;font-weight:bold;font-size:12px}.player{background:#111;border-radius:10px;overflow:hidden;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;color:#fff;text-align:center;padding:20px}.player iframe{width:100%;height:100%;border:0}.muted{color:#666;line-height:1.7;font-size:14px}label{display:block;font-weight:bold;margin:12px 0 6px}input{width:100%;padding:12px;border:1px solid #ccc;border-radius:7px;font-size:15px}button{border:0;border-radius:7px;padding:11px 14px;font-weight:bold;cursor:pointer}.primary{background:#b91c1c;color:white}.secondary{background:#eee;color:#222}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.notice{background:#fff7ed;border:1px solid #fed7aa;padding:12px;border-radius:8px;color:#9a3412;font-size:13px;line-height:1.6}.hidden{display:none!important}footer{text-align:center;padding:20px;color:#777;font-size:12px}
-</style>
-</head>
-<body>
-<header><a href="./">← International News</a><h1>🏏 LIVE क्रिकेट</h1><div>मैच देखें • अधिकृत लाइव स्ट्रीम</div></header>
+*{box-sizing:border-box}body{margin:0;background:#f4f4f4;color:#171717;font-family:Arial,"Noto Sans Devanagari",sans-serif}header{background:#fff;border-top:5px solid #b91c1c;border-bottom:1px solid #ddd;padding:12px 16px}header a{color:#b91c1c;text-decoration:none;font-weight:bold}h1{font-size:clamp(25px,5vw,38px);margin:15px 0 4px}header p{margin:0;color:#666;font-size:14px}.wrap{max-width:1120px;margin:18px auto;padding:0 14px}.tabs{display:flex;gap:8px;overflow:auto;margin:12px 0}.tabs button,.btn{border:0;border-radius:6px;padding:11px 14px;font-weight:bold;cursor:pointer;background:#eee;color:#222;white-space:nowrap}.tabs button.active,.btn.primary{background:#b91c1c;color:white}.panel{background:white;border:1px solid #e2e2e2;border-radius:10px;padding:16px;margin-bottom:16px}.panel h2{margin:0 0 8px;font-size:22px}.muted{color:#666;font-size:13px;line-height:1.7}.source-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.source{border:1px solid #ddd;border-radius:8px;padding:15px;background:#fff}.source h3{margin:0 0 7px}.source p{font-size:13px;line-height:1.6;color:#666}.source a{display:inline-block;margin-top:6px;background:#b91c1c;color:white;text-decoration:none;padding:10px 12px;border-radius:5px;font-weight:bold;font-size:13px}.live-frame{width:100%;height:680px;border:1px solid #ddd;border-radius:8px;background:#fff}.notice{background:#fff7ed;border:1px solid #fed7aa;padding:12px;border-radius:8px;color:#854d0e;font-size:13px;line-height:1.7}.updated{font-size:12px;color:#777;margin-top:8px}footer{text-align:center;padding:22px;color:#777;font-size:12px}@media(max-width:650px){.source-grid{grid-template-columns:1fr}.live-frame{height:620px}.panel{padding:12px}}
+</style></head><body>
+<header><a href="./">← International News</a><h1>🏏 Live Cricket Score</h1><p>अभी चल रहे मैच • आज के स्कोर • सभी टीमों के आने वाले मैच</p></header>
 <main class="wrap">
-<section class="panel"><span class="badge">LIVE MATCH</span><h2 id="matchTitle">क्रिकेट LIVE स्ट्रीम</h2><p class="muted">जब आधिकारिक प्रसारण अधिकार धारक द्वारा दिया गया एम्बेड लिंक जोड़ा जाएगा, तो मैच यहाँ प्लेयर में चलेगा।</p>
-<div class="player" id="player"><div><div style="font-size:42px">🏏</div><strong>LIVE स्ट्रीम अभी सेट नहीं है</strong><p class="muted" style="color:#ddd">स्ट्रीम उपलब्ध होने पर यहाँ वीडियो दिखाई देगी।</p></div></div>
-<p class="muted" id="status" aria-live="polite">अधिकृत स्ट्रीम लिंक जोड़ें।</p></section>
-<section class="panel"><h3>स्ट्रीम सेटिंग</h3><p class="muted">यहाँ अधिकार धारक द्वारा दिया गया आधिकारिक embed/player URL डालें। साधारण वेबसाइट या वीडियो पेज का लिंक काम नहीं कर सकता; प्रदाता का एम्बेड URL आवश्यक हो सकता है।</p>
-<label for="title">मैच का नाम</label><input id="title" placeholder="जैसे: India vs Australia">
-<label for="stream">आधिकारिक embed URL</label><input id="stream" type="url" placeholder="https://...">
-<div class="actions"><button class="primary" id="play">स्ट्रीम चलाएँ</button><button class="secondary" id="save">इस डिवाइस पर सेव करें</button><button class="secondary" id="clear">लिंक हटाएँ</button></div>
-<p class="muted">नोट: यह सेटिंग इस डिवाइस के ब्राउज़र में सेव होती है। सभी दर्शकों के ऐप में लिंक दिखाने के लिए इसे साइट के साझा admin/backend configuration से जोड़ना होगा।</p></section>
-<div class="notice">केवल उस स्ट्रीम का उपयोग करें जिसके लिए आपके पास संबंधित ऐप/वेबसाइट पर इंटरनेट प्रसारण और एम्बेड करने की लिखित अनुमति है। अनुमति की शर्तें और क्षेत्रीय प्रतिबंध लागू रहेंगे।</div>
-</main><footer>© International News</footer>
+<div class="tabs"><button class="active" data-tab="scores">🔴 लाइव स्कोर</button><button data-tab="upcoming">📅 आगामी मैच</button><button data-tab="all">🌍 सभी मैच</button></div>
+<section class="panel"><h2 id="sectionTitle">लाइव क्रिकेट स्कोर</h2><p class="muted">अंतरराष्ट्रीय, महिला क्रिकेट और घरेलू टूर्नामेंट सहित उपलब्ध मैचों के लाइव स्कोर और शेड्यूल देखें। स्कोर स्रोत से सीधे अपडेट होता है।</p>
+<div id="frameWrap"><iframe class="live-frame" id="scoreFrame" title="Live cricket scores and match schedule" src="https://www.cricbuzz.com/live-cricket-scores/real-time" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+<p class="updated" id="frameStatus">स्कोर पेज लोड हो रहा है…</p>
+<div class="actions"><button class="btn primary" id="refresh">↻ स्कोर रीफ्रेश करें</button><a class="btn" id="openSource" href="https://www.cricbuzz.com/live-cricket-scores/real-time" target="_blank" rel="noopener">पूरा स्कोर खोलें ↗</a></div></section>
+<section class="panel"><h2>आधिकारिक मैच और फिक्स्चर</h2><p class="muted">यदि स्कोर पैनल आपके फोन में एम्बेड होकर नहीं खुलता, तो नीचे दिए गए स्रोत से लाइव स्कोर या आने वाले मैच खोलें। ये लिंक सभी देशों और टीमों के मैच दिखाते हैं, सिर्फ भारत के नहीं।</p><div class="source-grid">
+<article class="source"><h3>🏏 Cricbuzz — लाइव स्कोर</h3><p>अभी चल रहे मैच, स्कोरकार्ड, ओवर, विकेट और मैच की स्थिति।</p><a href="https://www.cricbuzz.com/live-cricket-scores/real-time" target="_blank" rel="noopener">लाइव स्कोर देखें ↗</a></article>
+<article class="source"><h3>📅 Cricbuzz — सभी आगामी मैच</h3><p>अंतरराष्ट्रीय, लीग और घरेलू क्रिकेट के आने वाले मैचों का शेड्यूल।</p><a href="https://www.cricbuzz.com/cricket-schedule/upcoming-series/all" target="_blank" rel="noopener">आगामी मैच देखें ↗</a></article>
+<article class="source"><h3>🌐 ICC — आधिकारिक फिक्स्चर</h3><p>पुरुष और महिला अंतरराष्ट्रीय क्रिकेट के आधिकारिक मैच और परिणाम।</p><a href="https://www.icc-cricket.com/fixtures-results" target="_blank" rel="noopener">ICC फिक्स्चर देखें ↗</a></article>
+<article class="source"><h3>🇮🇳 भारत और घरेलू क्रिकेट</h3><p>भारत की टीम, महिला क्रिकेट और घरेलू टूर्नामेंट के मैच भी शेड्यूल में देखें।</p><a href="https://www.cricbuzz.com/cricket-schedule" target="_blank" rel="noopener">पूरा शेड्यूल देखें ↗</a></article>
+</div></section>
+<div class="notice">नोट: लाइव स्कोर और फिक्स्चर तीसरे पक्ष के स्रोतों से आते हैं। यदि कोई स्रोत अपनी वेबसाइट को इस पेज में दिखाने की अनुमति नहीं देता, तो ऊपर दिए गए बटन से उसे सीधे खोलें। आधिकारिक लाइव वीडियो स्ट्रीम तभी दिखाई जा सकती है जब प्रसारणकर्ता एम्बेड की अनुमति देता हो।</div>
+</main><footer>© International News • Live Cricket Score & Fixtures</footer>
 <script>
-const $=id=>document.getElementById(id);
-function validUrl(value){try{const u=new URL(value);return u.protocol==="https:"||u.protocol==="http:"}catch{return false}}
-function showStream(url,title){$("matchTitle").textContent=title||"क्रिकेट LIVE स्ट्रीम";if(!url){$("player").innerHTML='<div><div style="font-size:42px">🏏</div><strong>LIVE स्ट्रीम अभी सेट नहीं है</strong><p style="color:#ddd">आधिकारिक embed URL जोड़ें।</p></div>';$("status").textContent="अधिकृत स्ट्रीम लिंक जोड़ें।";return}if(!validUrl(url)){$("status").textContent="कृपया सही HTTPS embed URL डालें।";return}const frame=document.createElement("iframe");frame.src=url;frame.title=title||"Official live cricket stream";frame.allow="autoplay; encrypted-media; picture-in-picture; fullscreen";frame.allowFullscreen=true;frame.referrerPolicy="strict-origin-when-cross-origin";$("player").replaceChildren(frame);$("status").textContent="स्ट्रीम प्लेयर लोड किया गया। यदि वीडियो नहीं चलती, तो प्रदाता का सही embed URL या domain अनुमति जाँचें।"}
-function loadSaved(){const data=JSON.parse(localStorage.getItem("hsz-cricket-stream")||"{}");$("title").value=data.title||"";$("stream").value=data.url||"";if(data.url)showStream(data.url,data.title)}
-$("play").addEventListener("click",()=>showStream($("stream").value.trim(),$("title").value.trim()));
-$("save").addEventListener("click",()=>{const url=$("stream").value.trim();if(url&&!validUrl(url)){$("status").textContent="लिंक सही नहीं है। HTTPS embed URL जाँचें।";return}const data={url,title:$("title").value.trim()};localStorage.setItem("hsz-cricket-stream",JSON.stringify(data));showStream(data.url,data.title);$("status").textContent="सेटिंग इस डिवाइस पर सेव हो गई।"});
-$("clear").addEventListener("click",()=>{localStorage.removeItem("hsz-cricket-stream");$("stream").value="";$("title").value="";showStream("","");});
-loadSaved();
+const frame=document.getElementById("scoreFrame"),status=document.getElementById("frameStatus"),title=document.getElementById("sectionTitle"),source=document.getElementById("openSource");
+const urls={scores:"https://www.cricbuzz.com/live-cricket-scores/real-time",upcoming:"https://www.cricbuzz.com/cricket-schedule/upcoming-series/all",all:"https://www.icc-cricket.com/fixtures-results"};
+const names={scores:"🔴 लाइव क्रिकेट स्कोर",upcoming:"📅 सभी आगामी मैच",all:"🌍 अंतरराष्ट्रीय फिक्स्चर और परिणाम"};
+document.querySelectorAll("[data-tab]").forEach(btn=>btn.addEventListener("click",()=>{document.querySelectorAll("[data-tab]").forEach(b=>b.classList.toggle("active",b===btn));const key=btn.dataset.tab;title.textContent=names[key];frame.src=urls[key];source.href=urls[key];status.textContent="मैच सूची लोड हो रही है…";}));
+frame.addEventListener("load",()=>{status.textContent="स्कोर स्रोत खुल गया। यदि पैनल खाली दिखे, तो 'पूरा स्कोर खोलें' दबाएँ।"});
+document.getElementById("refresh").addEventListener("click",()=>{status.textContent="नया स्कोर लोड हो रहा है…";frame.src=frame.src.split("?")[0]+"?refresh="+Date.now();});
 </script></body></html>
