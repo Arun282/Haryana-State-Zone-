@@ -1,1 +1,19 @@
-const CACHE="hsz-shell-v1";const FILES=["./","./index.html","./app.js","./manifest.webmanifest"];self.addEventListener("install",e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES))));self.addEventListener("activate",e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k))))));self.addEventListener("fetch",e=>{if(new URL(e.request.url).origin===location.origin&&e.request.method==="GET")e.respondWith(fetch(e.request).then(r=>{const copy=r.clone();caches.open(CACHE).then(c=>c.put(e.request,copy));return r}).catch(()=>caches.match(e.request)))});
+const CACHE = "international-news-shell-v2";
+const FILES = ["./", "./index.html", "./app.js", "./epaper.html", "./manifest.webmanifest"];
+self.addEventListener("install", event => {
+  event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(FILES)).then(() => self.skipWaiting()));
+});
+self.addEventListener("activate", event => {
+  event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(key => key !== CACHE).map(key => caches.delete(key)))).then(() => self.clients.claim()));
+});
+self.addEventListener("fetch", event => {
+  const url = new URL(event.request.url);
+  if (url.origin !== location.origin || event.request.method !== "GET" || url.pathname.includes("/api/")) return;
+  event.respondWith(fetch(event.request, { cache: "no-store" }).then(response => {
+    if (response.ok) {
+      const copy = response.clone();
+      caches.open(CACHE).then(cache => cache.put(event.request, copy));
+    }
+    return response;
+  }).catch(() => caches.match(event.request).then(cached => cached || Response.error())));
+});
