@@ -10,18 +10,24 @@ const FEEDS = [
   ["खेल", "India cricket news when:1d"],
   ["खेल", "India football hockey badminton tennis news when:2d"]
 ];
-const decode = (s = "") => s
-  .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1")
-  .replace(/<[^>]*>/g, " ")
-  .replace(/&amp;/g, "&").replace(/&quot;/g, '"')
-  .replace(/&#39;|&apos;/g, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
-  .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
-  .replace(/&#x([\da-f]+);/gi, (_, n) => String.fromCodePoint(parseInt(n, 16)))
-  .replace(/\s+/g, " ").trim();
+const decode = (s = "") => s.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1").replace(/<[^>]*>/g, " ").replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&#39;|&apos;/g, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n))).replace(/&#x([\da-f]+);/gi, (_, n) => String.fromCodePoint(parseInt(n, 16))).replace(/\s+/g, " ").trim();
 function tag(xml, name) {
-  const escaped = name.replace(":", "\\:");
-  const re = new RegExp("<" + escaped + "(?:\\s[^>]*)?>([\\s\\S]*?)<\\/" + escaped + ">", "i");
+  const re = new RegExp("<" + name.replace(":", "\\:") + "(?:\\s[^>]*)?>([\\s\\S]*?)<\\/" + name.replace(":", "\\:") + ">", "i");
   return (xml.match(re) || [])[1] || "";
+}
+function getImage(item, description, encoded) {
+  const source = item + " " + description + " " + encoded;
+  const patterns = [
+    /<media:thumbnail[^>]+url=["']([^"']+)/i,
+    /<media:content[^>]+url=["']([^"']+)/i,
+    /<enclosure[^>]+url=["']([^"']+)/i,
+    /<img[^>]+src=["']([^"']+)/i
+  ];
+  for (const pattern of patterns) {
+    const match = source.match(pattern);
+    if (match && /^https?:\/\//i.test(match[1])) return match[1].replace(/&amp;/g, "&");
+  }
+  return "";
 }
 function parseItems(xml, category) {
   return [...xml.matchAll(/<item(?:\s[^>]*)?>([\s\S]*?)<\/item>/gi)].map(match => {
@@ -30,32 +36,18 @@ function parseItems(xml, category) {
     const title = rawTitle.replace(/\s[-|–—]\s[^-|–—]{2,80}$/, "").trim();
     const description = tag(item, "description");
     const encoded = tag(item, "content:encoded");
-    const content = decode(encoded || description);
-    const image = (description.match(/<img[^>]+src=["']([^"']+)/i) || [])[1]
-      || (item.match(/<media:content[^>]+url=["']([^"']+)/i) || [])[1]
-      || (item.match(/<enclosure[^>]+url=["']([^"']+)/i) || [])[1] || "";
+    const content = encoded || description;
     const pubDate = decode(tag(item, "pubDate"));
     const parsedDate = Date.parse(pubDate);
     const link = decode(tag(item, "link"));
-    return {
-      id: decode(tag(item, "guid")) || link,
-      title,
-      summary: decode(description).slice(0, 1400),
-      body: content.slice(0, 5000),
-      image,
-      date: parsedDate ? new Date(parsedDate).toISOString() : null,
-      category
-    };
+    return { id: decode(tag(item, "guid")) || link, title, summary: decode(description).slice(0, 1400), body: decode(content).slice(0, 5000), image: getImage(item, description, encoded), date: parsedDate ? new Date(parsedDate).toISOString() : null, category };
   }).filter(story => story.title && story.title.length > 8);
 }
 module.exports = async function handler(req, res) {
   res.setHeader("Cache-Control", "no-store, max-age=0, must-revalidate");
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Content-Type", "application/json; charset=utf-8");
-  if (req.method === "OPTIONS") {
-    res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
-    return res.status(204).end();
-  }
+  if (req.method === "OPTIONS") { res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS"); return res.status(204).end(); }
   if (req.method !== "GET") return res.status(405).json({ error: "Method not allowed" });
   try {
     const results = await Promise.all(FEEDS.map(async ([category, query]) => {
@@ -63,30 +55,20 @@ module.exports = async function handler(req, res) {
       const controller = new AbortController();
       const timer = setTimeout(() => controller.abort(), 12000);
       try {
-        const response = await fetch(url, {
-          headers: { "User-Agent": "InternationalNewsRSS/1.0", "Accept": "application/rss+xml, application/xml, text/xml" },
-          signal: controller.signal
-        });
+        const response = await fetch(url, { headers: { "User-Agent": "InternationalNewsRSS/1.0", "Accept": "application/rss+xml, application/xml, text/xml" }, signal: controller.signal });
         if (!response.ok) throw new Error("RSS " + response.status);
         return parseItems(await response.text(), category);
-      } catch (error) {
-        console.error("News feed failed:", category, error.message);
-        return [];
-      } finally {
-        clearTimeout(timer);
-      }
+      } catch (error) { console.error("News feed failed:", category, error.message); return []; }
+      finally { clearTimeout(timer); }
     }));
     const cutoff = Date.now() - 48 * 60 * 60 * 1000;
     const seen = new Set();
-    const stories = results.flat()
-      .filter(story => !story.date || Date.parse(story.date) >= cutoff)
-      .sort((a, b) => (Date.parse(b.date) || 0) - (Date.parse(a.date) || 0))
-      .filter(story => {
-        const key = story.title.toLocaleLowerCase("hi");
-        if (seen.has(key)) return false;
-        seen.add(key);
-        return true;
-      }).slice(0, 80);
+    const stories = results.flat().filter(story => !story.date || Date.parse(story.date) >= cutoff).sort((a, b) => (Date.parse(b.date) || 0) - (Date.parse(a.date) || 0)).filter(story => {
+      const key = story.title.toLocaleLowerCase("hi");
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    }).slice(0, 80);
     return res.status(200).json({ updatedAt: new Date().toISOString(), count: stories.length, stories });
   } catch (error) {
     console.error("News API failed:", error);
