@@ -2,9 +2,9 @@
 <html lang="hi">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#b91c1c"><meta name="description" content="Haryana State Zone — हरियाणा की ताज़ा खबरें">
+<meta name="theme-color" content="#b91c1c"><meta name="description" content="International News — अंतरराष्ट्रीय और देश की ताज़ा खबरें">
 <link rel="manifest" href="./manifest.webmanifest">
-<title>Haryana State Zone | हरियाणा की खबरें</title>
+<title>International News | दुनिया भर की खबरें</title>
 <style>
 :root{--red:#b91c1c;--ink:#171717;--muted:#666;--line:#e5e5e5;--paper:#fff}
 *{box-sizing:border-box}body{margin:0;background:#f4f4f4;color:var(--ink);font-family:Arial,"Noto Sans Devanagari",sans-serif}
@@ -22,12 +22,12 @@ main{padding:22px 0}.breaking{background:var(--red);color:white;padding:12px 14p
 </head>
 <body>
 <header><div class="wrap">
-<div class="topline"><span id="today">हरियाणा की ताज़ा खबरें</span><span>हिंदी न्यूज़ • Haryana</span></div>
-<div class="brand"><h1>HARYANA <span>STATE</span> ZONE</h1><p>हरियाणा की आवाज़ • हर खबर पर नज़र</p></div>
+<div class="topline"><span id="today">अंतरराष्ट्रीय और देश की ताज़ा खबरें</span><span>हिंदी न्यूज़ • Haryana</span></div>
+<div class="brand"><h1>INTERNATIONAL <span>NEWS</span></h1><p>दुनिया की हर बड़ी खबर • हर खबर पर नज़र</p></div>
 <nav id="nav"><button class="active" data-category="all">सभी खबरें</button><button data-category="हरियाणा">हरियाणा</button><button data-category="नारनौल">नारनौल</button><button data-category="महेंद्रगढ़">महेंद्रगढ़</button><button data-category="रेवाड़ी">रेवाड़ी</button><button data-category="गुरुग्राम">गुरुग्राम</button><button data-category="देश">देश</button><button data-category="शिक्षा">शिक्षा</button><button data-category="खेल">खेल</button><button data-category="मनोरंजन">मनोरंजन</button><a href="./cricket-live.html" style="display:inline-block;background:#15803d;color:#fff;text-decoration:none;border:0;padding:8px 12px;border-radius:4px;font-weight:bold;white-space:nowrap">🏏 LIVE क्रिकेट</a><button id="open-epaper" type="button" style="display:inline-block;background:#111;color:#fff;border:0;padding:8px 12px;border-radius:4px;font-weight:bold;white-space:nowrap;cursor:pointer">आज का ई-पेपर</button></nav>
 </div></header>
-<main class="wrap"><div class="breaking"><strong>ताज़ा खबर</strong><span id="ticker">खबरें लोड हो रही हैं…</span></div><h2 class="section-title">लेटेस्ट न्यूज़ <small style="font-size:12px;color:#777;font-weight:normal">• हर मिनट अपडेट</small></h2><div id="status" class="status">खबरें लोड हो रही हैं…</div><section id="news" class="grid"></section><div class="footer">© Haryana State Zone • खबरों की जानकारी उपलब्ध फ़ीड के आधार पर</div></main>
+<main class="wrap"><div class="breaking"><strong>ताज़ा खबर</strong><span id="ticker">खबरें लोड हो रही हैं…</span></div><h2 class="section-title">लेटेस्ट न्यूज़ <small style="font-size:12px;color:#777;font-weight:normal">• हर मिनट अपडेट</small></h2><div id="status" class="status">खबरें लोड हो रही हैं…</div><section id="news" class="grid"></section><div class="footer">© International News • खबरों की जानकारी उपलब्ध फ़ीड के आधार पर</div></main>
 <section id="article" class="article hidden" aria-modal="true" role="dialog"><div class="article-inner"><button id="close" class="close">← वापस खबरों पर</button><div id="article-content"></div></div></section>
-<section id="epaper-view" class="hidden" style="position:fixed;inset:0;z-index:30;background:#fff"><div style="height:52px;display:flex;align-items:center;gap:12px;padding:8px 12px;background:#b91c1c;color:#fff"><button id="close-epaper" style="background:#fff;color:#b91c1c;border:0;padding:8px 12px;font-weight:bold;border-radius:4px">← वापस</button><strong>Haryana State Zone • ई-पेपर</strong></div><iframe id="epaper-frame" title="Haryana State Zone ई-पेपर" src="about:blank" style="display:block;border:0;width:100%;height:calc(100% - 52px);background:#fff"></iframe></section>
+<section id="epaper-view" class="hidden" style="position:fixed;inset:0;z-index:30;background:#fff"><div style="height:52px;display:flex;align-items:center;gap:12px;padding:8px 12px;background:#b91c1c;color:#fff"><button id="close-epaper" style="background:#fff;color:#b91c1c;border:0;padding:8px 12px;font-weight:bold;border-radius:4px">← वापस</button><strong>International News • ई-पेपर</strong></div><iframe id="epaper-frame" title="International News ई-पेपर" src="about:blank" style="display:block;border:0;width:100%;height:calc(100% - 52px);background:#fff"></iframe></section>
 <script src="./app.js"></script><script>document.getElementById("open-epaper").addEventListener("click",function(){document.getElementById("epaper-view").classList.remove("hidden");if(document.getElementById("epaper-frame").src==="about:blank")document.getElementById("epaper-frame").src="./epaper.html";document.body.style.overflow="hidden"});document.getElementById("close-epaper").addEventListener("click",function(){document.getElementById("epaper-view").classList.add("hidden");document.body.style.overflow=""});</script>
 </body></html>
