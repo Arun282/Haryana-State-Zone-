@@ -53,10 +53,41 @@ function parseItems(xml, category) {
       summary: plain(description).slice(0, 1400),
       body: plain(encoded || description).slice(0, 5000),
       image: getImage(item, description, encoded),
+      articleUrl: link,
       date: parsedDate ? new Date(parsedDate).toISOString() : null,
       category
     };
   }).filter(story => story.title && story.title.length > 8);
+}
+function metaImage(html) {
+  const tags = html.match(/<meta\b[^>]*>/gi) || [];
+  for (const item of tags) {
+    const property = (item.match(/(?:property|name)=["'](?:og:image|twitter:image|twitter:image:src)["']/i) || [])[0];
+    if (!property) continue;
+    const content = item.match(/content=["']([^"']+)["']/i);
+    if (content && /^https?:\/\//i.test(content[1])) return content[1].replace(/&amp;/g, "&");
+  }
+  return "";
+}
+async function articleImage(story) {
+  if (story.image || !story.articleUrl || !/^https?:\/\//i.test(story.articleUrl)) return story;
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 3500);
+  try {
+    const response = await fetch(story.articleUrl, {
+      headers: { "User-Agent": "Mozilla/5.0 (compatible; InternationalNews/1.0)", "Accept": "text/html,application/xhtml+xml" },
+      signal: controller.signal,
+      redirect: "follow"
+    });
+    if (!response.ok) return story;
+    const html = (await response.text()).slice(0, 250000);
+    story.image = metaImage(html);
+  } catch (_) {
+    // Some publishers block automated preview-image requests.
+  } finally {
+    clearTimeout(timer);
+  }
+  return story;
 }
 module.exports = async function handler(req, res) {
   res.setHeader("Cache-Control", "no-store, max-age=0, must-revalidate");
@@ -78,12 +109,21 @@ module.exports = async function handler(req, res) {
     }));
     const cutoff = Date.now() - 48 * 60 * 60 * 1000;
     const seen = new Set();
-    const stories = results.flat().filter(story => !story.date || Date.parse(story.date) >= cutoff).sort((a, b) => (Date.parse(b.date) || 0) - (Date.parse(a.date) || 0)).filter(story => {
+    let stories = results.flat().filter(story => !story.date || Date.parse(story.date) >= cutoff).sort((a, b) => (Date.parse(b.date) || 0) - (Date.parse(a.date) || 0)).filter(story => {
       const key = story.title.toLocaleLowerCase("hi");
       if (seen.has(key)) return false;
       seen.add(key);
       return true;
     }).slice(0, 80);
+    // Resolve genuine publisher preview photos for the leading stories, without copying article text.
+    const toCheck = stories.filter(story => !story.image && story.articleUrl).slice(0, 24);
+    const resolved = await Promise.all(toCheck.map(articleImage));
+    const imageById = new Map(resolved.map(story => [story.id, story.image]));
+    stories = stories.map(story => {
+      if (imageById.has(story.id) && imageById.get(story.id)) story.image = imageById.get(story.id);
+      delete story.articleUrl;
+      return story;
+    });
     return res.status(200).json({ updatedAt: new Date().toISOString(), count: stories.length, stories });
   } catch (error) {
     console.error("News API failed:", error);
