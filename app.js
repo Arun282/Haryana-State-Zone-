@@ -36,7 +36,7 @@ function normalize(story) {
   };
 }
 function storyShareUrl(story) {
-  const url = new URL(location.origin + location.pathname);
+  const url = new URL("https://international-news-arun282.vercel.app/");
   url.searchParams.set("story", story.id || story.title);
   return url.href;
 }
