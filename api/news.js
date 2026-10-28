@@ -10,18 +10,27 @@ const FEEDS = [
   ["खेल", "India cricket news when:1d"],
   ["खेल", "India football hockey badminton tennis news when:2d"]
 ];
-const decode = (s = "") => s.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1").replace(/<[^>]*>/g, " ").replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&#39;|&apos;/g, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n))).replace(/&#x([\da-f]+);/gi, (_, n) => String.fromCodePoint(parseInt(n, 16))).replace(/\s+/g, " ").trim();
+const decode = (s = "") => s
+  .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1")
+  .replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&#39;|&apos;/g, "'")
+  .replace(/&lt;/g, "<").replace(/&gt;/g, ">")
+  .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
+  .replace(/&#x([\da-f]+);/gi, (_, n) => String.fromCodePoint(parseInt(n, 16)));
 function tag(xml, name) {
-  const re = new RegExp("<" + name.replace(":", "\\:") + "(?:\\s[^>]*)?>([\\s\\S]*?)<\\/" + name.replace(":", "\\:") + ">", "i");
+  const escaped = name.replace(":", "\\:");
+  const re = new RegExp("<" + escaped + "(?:\\s[^>]*)?>([\\s\\S]*?)<\\/" + escaped + ">", "i");
   return (xml.match(re) || [])[1] || "";
 }
+function plain(value = "") {
+  return decode(value).replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+}
 function getImage(item, description, encoded) {
-  const source = item + " " + description + " " + encoded;
+  const source = decode(item + " " + description + " " + encoded);
   const patterns = [
     /<media:thumbnail[^>]+url=["']([^"']+)/i,
     /<media:content[^>]+url=["']([^"']+)/i,
     /<enclosure[^>]+url=["']([^"']+)/i,
-    /<img[^>]+src=["']([^"']+)/i
+    /<img[^>]+(?:src|data-src)=["']([^"']+)/i
   ];
   for (const pattern of patterns) {
     const match = source.match(pattern);
@@ -32,15 +41,21 @@ function getImage(item, description, encoded) {
 function parseItems(xml, category) {
   return [...xml.matchAll(/<item(?:\s[^>]*)?>([\s\S]*?)<\/item>/gi)].map(match => {
     const item = match[1];
-    const rawTitle = decode(tag(item, "title"));
-    const title = rawTitle.replace(/\s[-|–—]\s[^-|–—]{2,80}$/, "").trim();
+    const title = plain(tag(item, "title")).replace(/\s[-|–—]\s[^-|–—]{2,80}$/, "").trim();
     const description = tag(item, "description");
     const encoded = tag(item, "content:encoded");
-    const content = encoded || description;
-    const pubDate = decode(tag(item, "pubDate"));
+    const pubDate = plain(tag(item, "pubDate"));
     const parsedDate = Date.parse(pubDate);
-    const link = decode(tag(item, "link"));
-    return { id: decode(tag(item, "guid")) || link, title, summary: decode(description).slice(0, 1400), body: decode(content).slice(0, 5000), image: getImage(item, description, encoded), date: parsedDate ? new Date(parsedDate).toISOString() : null, category };
+    const link = plain(tag(item, "link"));
+    return {
+      id: plain(tag(item, "guid")) || link,
+      title,
+      summary: plain(description).slice(0, 1400),
+      body: plain(encoded || description).slice(0, 5000),
+      image: getImage(item, description, encoded),
+      date: parsedDate ? new Date(parsedDate).toISOString() : null,
+      category
+    };
   }).filter(story => story.title && story.title.length > 8);
 }
 module.exports = async function handler(req, res) {
